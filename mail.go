@@ -24,7 +24,7 @@ func NewService(c Config) *Service {
 	}
 }
 
-func (s *Service) Send(to string, msg []byte) error {
+func (s *Service) Send(to string, msg Message) error {
 	// Set up authentication information.
 	auth := smtp.PlainAuth(s.conf.identity, s.conf.username, s.conf.password, s.conf.hostname)
 
@@ -69,7 +69,7 @@ func (s *Service) Send(to string, msg []byte) error {
 		return err
 	}
 
-	if _, err = w.Write([]byte(msg)); err != nil {
+	if _, err = w.Write([]byte(msg.Build())); err != nil {
 		return err
 	}
 
