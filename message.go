@@ -18,9 +18,13 @@ type Option interface {
 	get() string
 }
 
-type ContentTypeHTML struct{}
+func ContentTypeHTML() contentTypeHTML {
+	return contentTypeHTML{}
+}
 
-func (o ContentTypeHTML) get() string {
+type contentTypeHTML struct{}
+
+func (o contentTypeHTML) get() string {
 	return contentTypeTextHTML
 }
 
