@@ -19,7 +19,10 @@ type Option interface {
 }
 
 type ContentTypeHTML struct{}
-(o ContentTypeHTML)
+
+func (o ContentTypeHTML) get() string {
+	return contentTypeTextHTML
+}
 
 func NewMessage() Message {
 	return Message{}
@@ -30,8 +33,8 @@ func (m Message) SetHeader(from, to string) Message {
 	return m
 }
 
-func (m Message) SetMime(contentType string) Message {
-	m.mime = "MIME-version: 1.0;\r\nContent-Type: " + contentType + "; charset=\"UTF-8\";\r\n"
+func (m Message) SetMime(contentType Option) Message {
+	m.mime = "MIME-version: 1.0;\r\nContent-Type: " + contentType.get() + "; charset=\"UTF-8\";\r\n"
 	return m
 }
 
