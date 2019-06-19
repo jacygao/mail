@@ -11,11 +11,11 @@ type Service struct {
 }
 
 type Config struct {
-	identity string
-	username string
-	password string
-	hostname string
-	port     string
+	Identity string
+	Username string
+	Password string
+	Hostname string
+	Port     string
 }
 
 func NewService(c Config) *Service {
@@ -26,23 +26,23 @@ func NewService(c Config) *Service {
 
 func (s *Service) Send(to string, msg Message) error {
 	// Set up authentication information.
-	auth := smtp.PlainAuth(s.conf.identity, s.conf.username, s.conf.password, s.conf.hostname)
+	auth := smtp.PlainAuth(s.conf.Identity, s.conf.Username, s.conf.Password, s.conf.Hostname)
 
 	// TLS config
 	tlsconfig := &tls.Config{
 		InsecureSkipVerify: true,
-		ServerName:         s.conf.hostname,
+		ServerName:         s.conf.Hostname,
 	}
 
 	// call tls.Dial instead of smtp.Dial
 	// for smtp servers running on 465 that require an ssl connection
 	// from the very beginning (no starttls)
-	conn, err := tls.Dial("tcp", s.conf.hostname+":"+s.conf.port, tlsconfig)
+	conn, err := tls.Dial("tcp", s.conf.Hostname+":"+s.conf.Port, tlsconfig)
 	if err != nil {
 		return err
 	}
 
-	c, err := smtp.NewClient(conn, s.conf.hostname)
+	c, err := smtp.NewClient(conn, s.conf.Hostname)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (s *Service) Send(to string, msg Message) error {
 	}
 
 	// To && From
-	if err := c.Mail(s.conf.username); err != nil {
+	if err := c.Mail(s.conf.Username); err != nil {
 		return err
 	}
 	if err := c.Rcpt(to); err != nil {
